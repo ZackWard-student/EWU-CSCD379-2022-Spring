@@ -4,6 +4,7 @@ export enum GameState {
   Active = 0,
   Won = 1,
   Lost = 2,
+  DualWin = 3
 }
 
 export class WordleGame {
@@ -16,12 +17,16 @@ export class WordleGame {
   words: Word[] = []
   state: GameState = GameState.Active
 
-  get currentWord(): Word {
+  get firstWord(): Word {
+    return this.words[this.words.length - 1]
+  }
+
+  get secondWord(): Word {
     return this.words[this.words.length - 1]
   }
 
   submitWord() {
-    if (this.currentWord.evaluateWord(this.word)) {
+    if (this.firstWord.evaluateWord(this.word) || this.secondWord.evaluateWord(this.word)) {
       this.state = GameState.Won
     } else if (this.words.length === 5) {
       this.state = GameState.Lost
